@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrailsRouteImport } from './routes/trails'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as LoginRouteImport } from './routes/login'
@@ -32,6 +33,11 @@ import { Route as DashboardBookingsRouteImport } from './routes/dashboard.bookin
 const TrailsRoute = TrailsRouteImport.update({
   id: '/trails',
   path: '/trails',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/packages': typeof PackagesRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trails': typeof TrailsRouteWithChildren
   '/dashboard/bookings': typeof DashboardBookingsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/packages': typeof PackagesRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trails': typeof TrailsRouteWithChildren
   '/dashboard/bookings': typeof DashboardBookingsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/packages': typeof PackagesRoute
   '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trails': typeof TrailsRouteWithChildren
   '/dashboard/bookings': typeof DashboardBookingsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/packages'
     | '/register'
+    | '/sitemap.xml'
     | '/trails'
     | '/dashboard/bookings'
     | '/dashboard/profile'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/packages'
     | '/register'
+    | '/sitemap.xml'
     | '/trails'
     | '/dashboard/bookings'
     | '/dashboard/profile'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/packages'
     | '/register'
+    | '/sitemap.xml'
     | '/trails'
     | '/dashboard/bookings'
     | '/dashboard/profile'
@@ -266,6 +278,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PackagesRoute: typeof PackagesRoute
   RegisterRoute: typeof RegisterRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TrailsRoute: typeof TrailsRouteWithChildren
 }
 
@@ -276,6 +289,13 @@ declare module '@tanstack/react-router' {
       path: '/trails'
       fullPath: '/trails'
       preLoaderRoute: typeof TrailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -451,18 +471,9 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PackagesRoute: PackagesRoute,
   RegisterRoute: RegisterRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TrailsRoute: TrailsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
