@@ -9,38 +9,372 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrailsRouteImport } from './routes/trails'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PackagesRouteImport } from './routes/packages'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ExperiencesRouteImport } from './routes/experiences'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as TrailsIdRouteImport } from './routes/trails.$id'
+import { Route as DashboardWishlistRouteImport } from './routes/dashboard.wishlist'
+import { Route as DashboardReviewsRouteImport } from './routes/dashboard.reviews'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
+import { Route as DashboardBookingsRouteImport } from './routes/dashboard.bookings'
 
+const TrailsRoute = TrailsRouteImport.update({
+  id: '/trails',
+  path: '/trails',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackagesRoute = PackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperiencesRoute = ExperiencesRouteImport.update({
+  id: '/experiences',
+  path: '/experiences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const TrailsIdRoute = TrailsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => TrailsRoute,
+} as any)
+const DashboardWishlistRoute = DashboardWishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardBookingsRoute = DashboardBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/experiences': typeof ExperiencesRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
+  '/packages': typeof PackagesRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/wishlist': typeof DashboardWishlistRoute
+  '/trails/$id': typeof TrailsIdRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/experiences': typeof ExperiencesRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
+  '/packages': typeof PackagesRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/wishlist': typeof DashboardWishlistRoute
+  '/trails/$id': typeof TrailsIdRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/checkout': typeof CheckoutRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/experiences': typeof ExperiencesRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/login': typeof LoginRoute
+  '/packages': typeof PackagesRoute
+  '/register': typeof RegisterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/wishlist': typeof DashboardWishlistRoute
+  '/trails/$id': typeof TrailsIdRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/checkout'
+    | '/contact'
+    | '/dashboard'
+    | '/experiences'
+    | '/faq'
+    | '/gallery'
+    | '/login'
+    | '/packages'
+    | '/register'
+    | '/sitemap.xml'
+    | '/trails'
+    | '/dashboard/bookings'
+    | '/dashboard/profile'
+    | '/dashboard/reviews'
+    | '/dashboard/wishlist'
+    | '/trails/$id'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/checkout'
+    | '/contact'
+    | '/experiences'
+    | '/faq'
+    | '/gallery'
+    | '/login'
+    | '/packages'
+    | '/register'
+    | '/sitemap.xml'
+    | '/trails'
+    | '/dashboard/bookings'
+    | '/dashboard/profile'
+    | '/dashboard/reviews'
+    | '/dashboard/wishlist'
+    | '/trails/$id'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/checkout'
+    | '/contact'
+    | '/dashboard'
+    | '/experiences'
+    | '/faq'
+    | '/gallery'
+    | '/login'
+    | '/packages'
+    | '/register'
+    | '/sitemap.xml'
+    | '/trails'
+    | '/dashboard/bookings'
+    | '/dashboard/profile'
+    | '/dashboard/reviews'
+    | '/dashboard/wishlist'
+    | '/trails/$id'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
+  CheckoutRoute: typeof CheckoutRoute
+  ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  ExperiencesRoute: typeof ExperiencesRoute
+  FaqRoute: typeof FaqRoute
+  GalleryRoute: typeof GalleryRoute
+  LoginRoute: typeof LoginRoute
+  PackagesRoute: typeof PackagesRoute
+  RegisterRoute: typeof RegisterRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TrailsRoute: typeof TrailsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trails': {
+      id: '/trails'
+      path: '/trails'
+      fullPath: '/trails'
+      preLoaderRoute: typeof TrailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiences': {
+      id: '/experiences'
+      path: '/experiences'
+      fullPath: '/experiences'
+      preLoaderRoute: typeof ExperiencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +382,98 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/trails/$id': {
+      id: '/trails/$id'
+      path: '/$id'
+      fullPath: '/trails/$id'
+      preLoaderRoute: typeof TrailsIdRouteImport
+      parentRoute: typeof TrailsRoute
+    }
+    '/dashboard/wishlist': {
+      id: '/dashboard/wishlist'
+      path: '/wishlist'
+      fullPath: '/dashboard/wishlist'
+      preLoaderRoute: typeof DashboardWishlistRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reviews': {
+      id: '/dashboard/reviews'
+      path: '/reviews'
+      fullPath: '/dashboard/reviews'
+      preLoaderRoute: typeof DashboardReviewsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/bookings': {
+      id: '/dashboard/bookings'
+      path: '/bookings'
+      fullPath: '/dashboard/bookings'
+      preLoaderRoute: typeof DashboardBookingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardBookingsRoute: typeof DashboardBookingsRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
+  DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardWishlistRoute: typeof DashboardWishlistRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardBookingsRoute: DashboardBookingsRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
+  DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardWishlistRoute: DashboardWishlistRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
+interface TrailsRouteChildren {
+  TrailsIdRoute: typeof TrailsIdRoute
+}
+
+const TrailsRouteChildren: TrailsRouteChildren = {
+  TrailsIdRoute: TrailsIdRoute,
+}
+
+const TrailsRouteWithChildren =
+  TrailsRoute._addFileChildren(TrailsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
+  CheckoutRoute: CheckoutRoute,
+  ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRouteWithChildren,
+  ExperiencesRoute: ExperiencesRoute,
+  FaqRoute: FaqRoute,
+  GalleryRoute: GalleryRoute,
+  LoginRoute: LoginRoute,
+  PackagesRoute: PackagesRoute,
+  RegisterRoute: RegisterRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TrailsRoute: TrailsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
