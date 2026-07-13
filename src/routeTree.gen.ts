@@ -9,38 +9,64 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrailsRouteImport } from './routes/trails'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TrailsIdRouteImport } from './routes/trails.$id'
 
+const TrailsRoute = TrailsRouteImport.update({
+  id: '/trails',
+  path: '/trails',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrailsIdRoute = TrailsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => TrailsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/trails/$id': typeof TrailsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/trails/$id': typeof TrailsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/trails': typeof TrailsRouteWithChildren
+  '/trails/$id': typeof TrailsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/trails' | '/trails/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/trails' | '/trails/$id'
+  id: '__root__' | '/' | '/trails' | '/trails/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TrailsRoute: typeof TrailsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trails': {
+      id: '/trails'
+      path: '/trails'
+      fullPath: '/trails'
+      preLoaderRoute: typeof TrailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +74,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trails/$id': {
+      id: '/trails/$id'
+      path: '/$id'
+      fullPath: '/trails/$id'
+      preLoaderRoute: typeof TrailsIdRouteImport
+      parentRoute: typeof TrailsRoute
+    }
   }
 }
 
+interface TrailsRouteChildren {
+  TrailsIdRoute: typeof TrailsIdRoute
+}
+
+const TrailsRouteChildren: TrailsRouteChildren = {
+  TrailsIdRoute: TrailsIdRoute,
+}
+
+const TrailsRouteWithChildren =
+  TrailsRoute._addFileChildren(TrailsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TrailsRoute: TrailsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
