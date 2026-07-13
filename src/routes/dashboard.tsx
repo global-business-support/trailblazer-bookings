@@ -37,7 +37,7 @@ function DashboardLayout() {
             </div>
             <nav className="mt-3 space-y-1">
               {links.map((l) => (
-                <Link key={l.to} to={l.to} activeOptions={{ exact: !!l.exact }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-cream data-[status=active]:bg-forest data-[status=active]:text-forest-foreground">
+                <Link key={l.to} to={l.to as never} activeOptions={{ exact: !!l.exact }} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-cream data-[status=active]:bg-forest data-[status=active]:text-forest-foreground">
                   <l.icon className="h-4 w-4" /> {l.label}
                 </Link>
               ))}
