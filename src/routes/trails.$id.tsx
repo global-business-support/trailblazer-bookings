@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FAQAccordion } from "@/components/site/FAQAccordion";
 import { TrailCard } from "@/components/site/TrailCard";
-import { trails } from "@/lib/data";
+import { trails, type Trail } from "@/lib/data";
 
 export const Route = createFileRoute("/trails/$id")({
   loader: ({ params }) => {
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/trails/$id")({
 });
 
 function TrailDetail() {
-  const { trail } = Route.useLoaderData();
+  const { trail } = Route.useLoaderData() as { trail: Trail };
   const [active, setActive] = useState(0);
 
   const [adults, setAdults] = useState("2");

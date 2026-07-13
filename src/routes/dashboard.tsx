@@ -7,7 +7,8 @@ export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
 });
 
-const links = [
+type NavLink = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const links: NavLink[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/bookings", label: "My Bookings", icon: CalendarCheck },
   { to: "/dashboard/wishlist", label: "Wishlist", icon: Heart },
@@ -19,7 +20,7 @@ const links = [
   { to: "/dashboard/support", label: "Support", icon: LifeBuoy },
   { to: "/dashboard/profile", label: "Profile", icon: User },
   { to: "/dashboard/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 function DashboardLayout() {
   return (
