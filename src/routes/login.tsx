@@ -1,11 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { images } from "@/lib/data";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -15,7 +18,41 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    // Log login
+    if (data.user) {
+      await supabase.from("login_history").insert({
+        user_id: data.user.id,
+        user_agent: navigator.userAgent,
+        success: true,
+      });
+    }
+    toast.success("Welcome back");
+    navigate({ to: "/dashboard" });
+  }
+
+  async function onGoogle() {
+    const res = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (res.error) toast.error(res.error.message ?? "Google sign-in failed");
+    else if (!res.redirected) navigate({ to: "/dashboard" });
+  }
+
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="relative hidden lg:block">
@@ -44,19 +81,19 @@ function Login() {
           <h1 className="font-display text-3xl font-bold text-forest md:text-4xl">Welcome back</h1>
           <p className="mt-2 text-sm text-muted-foreground">Sign in to your account to continue.</p>
 
-          <form className="mt-8 space-y-4" onSubmit={(e) => { e.preventDefault(); }}>
+          <form className="mt-8 space-y-4" onSubmit={onSubmit}>
             <div>
               <Label>Email</Label>
               <div className="relative mt-1">
                 <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="you@email.com" className="pl-9 bg-card" />
+                <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" className="pl-9 bg-card" />
               </div>
             </div>
             <div>
               <Label>Password</Label>
               <div className="relative mt-1">
                 <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input type={show ? "text" : "password"} placeholder="••••••••" className="px-9 bg-card" />
+                <Input type={show ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="px-9 bg-card" />
                 <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -64,17 +101,19 @@ function Login() {
             </div>
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2"><input type="checkbox" className="rounded" /> Remember me</label>
-              <a href="#" className="text-forest hover:underline">Forgot password?</a>
+              <Link to="/login" className="text-forest hover:underline">Forgot password?</Link>
             </div>
-            <Button size="lg" className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90">Sign in</Button>
+            <Button size="lg" disabled={busy} className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
+            </Button>
 
             <div className="relative my-6 text-center text-xs text-muted-foreground">
               <span className="relative z-10 bg-background px-3">or continue with</span>
               <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
-              <Button type="button" variant="outline">Google</Button>
-              <Button type="button" variant="outline">Apple</Button>
+              <Button type="button" variant="outline" onClick={onGoogle}>Google</Button>
+              <Button type="button" variant="outline" disabled title="Apple sign-in coming soon">Apple</Button>
             </div>
 
             <div className="pt-4 text-center text-sm text-muted-foreground">

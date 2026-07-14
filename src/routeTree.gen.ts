@@ -21,9 +21,11 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as TrailsIdRouteImport } from './routes/trails.$id'
 import { Route as DashboardWishlistRouteImport } from './routes/dashboard.wishlist'
 import { Route as DashboardReviewsRouteImport } from './routes/dashboard.reviews'
@@ -90,6 +92,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -104,6 +111,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const TrailsIdRoute = TrailsIdRouteImport.update({
   id: '/$id',
@@ -134,6 +146,7 @@ const DashboardBookingsRoute = DashboardBookingsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
@@ -151,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/reviews': typeof DashboardReviewsRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -172,12 +186,14 @@ export interface FileRoutesByTo {
   '/dashboard/reviews': typeof DashboardReviewsRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
+  '/admin': typeof AdminIndexRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
@@ -195,6 +211,7 @@ export interface FileRoutesById {
   '/dashboard/reviews': typeof DashboardReviewsRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -202,6 +219,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/blog'
     | '/checkout'
     | '/contact'
@@ -219,6 +237,7 @@ export interface FileRouteTypes {
     | '/dashboard/reviews'
     | '/dashboard/wishlist'
     | '/trails/$id'
+    | '/admin/'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -240,11 +259,13 @@ export interface FileRouteTypes {
     | '/dashboard/reviews'
     | '/dashboard/wishlist'
     | '/trails/$id'
+    | '/admin'
     | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/blog'
     | '/checkout'
     | '/contact'
@@ -262,12 +283,14 @@ export interface FileRouteTypes {
     | '/dashboard/reviews'
     | '/dashboard/wishlist'
     | '/trails/$id'
+    | '/admin/'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRoute
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
@@ -368,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -388,6 +418,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/trails/$id': {
       id: '/trails/$id'
@@ -427,6 +464,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface DashboardRouteChildren {
   DashboardBookingsRoute: typeof DashboardBookingsRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
@@ -461,6 +508,7 @@ const TrailsRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRoute,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
@@ -477,13 +525,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
