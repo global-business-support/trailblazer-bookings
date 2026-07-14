@@ -113,7 +113,7 @@ export const revokeRole = createServerFn({ method: "POST" })
       .from("user_roles")
       .delete()
       .eq("user_id", data.user_id)
-      .eq("role", data.role);
+      .eq("role", data.role as never);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
