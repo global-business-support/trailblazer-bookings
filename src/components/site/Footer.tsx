@@ -35,13 +35,18 @@ export function Footer() {
             </div>
           </div>
 
-          <FooterCol title="Explore" links={[
-            ["/trails", "All Trails"],
-            ["/experiences", "Experiences"],
-            ["/packages", "Packages"],
-            ["/gallery", "Gallery"],
-            ["/blog", "Blog"],
-          ]} />
+
+          <FooterCol
+            title="Explore"
+            links={[
+              ["/", "Home"],
+              ["/trails", "All Trails"],
+              ["/experiences", "Experiences"],
+              ["/packages", "Packages"],
+              ["/gallery", "Gallery"],
+              ["/blog", "Blog"],
+            ]}
+          />
 
           <FooterCol title="Company" links={[
             ["/about", "About Us"],
@@ -73,15 +78,46 @@ export function Footer() {
     </footer>
   );
 }
+{/* <Link
+  to="/about"
+  className="text-red-500"
+>
+  About Test
+</Link> */}
+<Link
+  to="/"
+  onClick={() => console.log("Home clicked")}
+  className="text-muted-foreground transition-colors hover:text-forest"
+>
+  Home
+</Link>
 
-function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
+
+function FooterCol({
+  title,
+  links,
+}: {
+  title: string;
+  links: [string, string][];
+}) {
   return (
     <div>
-      <div className="font-display text-sm font-semibold uppercase tracking-wider text-forest">{title}</div>
+      <div className="font-display text-sm font-semibold uppercase tracking-wider text-forest">
+        {title}
+      </div>
+
       <ul className="mt-3 space-y-2 text-sm">
         {links.map(([to, label]) => (
           <li key={to}>
-            <Link to={to} className="text-muted-foreground transition-colors hover:text-forest">{label}</Link>
+            <Link
+              to={to as any}
+              className="text-muted-foreground transition-colors hover:text-forest"
+              activeProps={{
+                className: "text-forest font-semibold",
+              }}
+            >
+              {label}
+            </Link>
           </li>
         ))}
       </ul>
