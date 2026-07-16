@@ -80,9 +80,9 @@ export function Header() {
             <Button variant="ghost" size="icon" className="hidden md:inline-flex" onClick={() => setDark((d) => !d)}>
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex" asChild>
+            {/* <Button variant="ghost" size="icon" className="hidden md:inline-flex" asChild>
               <Link to="/dashboard"><Heart className="h-4 w-4" /></Link>
-            </Button>
+            </Button> */}
             <Button variant="ghost" size="sm" className="hidden md:inline-flex gap-2" asChild>
               <Link to="/login"><User className="h-4 w-4" />Login</Link>
             </Button>
