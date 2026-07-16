@@ -180,6 +180,7 @@ export function Header() {
                 <Moon className="h-4 w-4" />
               )}
             </Button>
+<<<<<<< HEAD
 
             {/* Wishlist */}
             <Button
@@ -207,6 +208,13 @@ export function Header() {
                 <User className="h-4 w-4" />
                 Login
               </Link>
+=======
+            {/* <Button variant="ghost" size="icon" className="hidden md:inline-flex" asChild>
+              <Link to="/dashboard"><Heart className="h-4 w-4" /></Link>
+            </Button> */}
+            <Button variant="ghost" size="sm" className="hidden md:inline-flex gap-2" asChild>
+              <Link to="/login"><User className="h-4 w-4" />Login</Link>
+>>>>>>> 0c36dea (update latest changes)
             </Button>
 
             {/* Desktop booking popup */}
