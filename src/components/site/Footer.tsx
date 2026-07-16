@@ -65,7 +65,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        {/* <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <div>© {new Date().getFullYear()} Horse Trails. All rights reserved.</div>
           <div className="flex flex-wrap gap-4">
             <a href="#" className="hover:text-forest">Privacy Policy</a>
@@ -73,7 +73,28 @@ export function Footer() {
             <a href="#" className="hover:text-forest">Refund Policy</a>
             <a href="#" className="hover:text-forest">Cookies</a>
           </div>
-        </div>
+        </div> */}
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
+  <div>© {new Date().getFullYear()} Horse Trails. All rights reserved.</div>
+
+  <div className="flex flex-wrap gap-4">
+    <Link to="/privacy-policy" className="hover:text-forest">
+      Privacy Policy
+    </Link>
+
+    <Link to="/terms" className="hover:text-forest">
+      Terms
+    </Link>
+
+    <Link to="/refund-policy" className="hover:text-forest">
+      Refund Policy
+    </Link>
+
+    <Link to="/cookies" className="hover:text-forest">
+      Cookies
+    </Link>
+  </div>
+</div>
       </div>
     </footer>
   );
@@ -93,6 +114,7 @@ export function Footer() {
 </Link>
 
 
+
 function FooterCol({
   title,
   links,
@@ -102,7 +124,7 @@ function FooterCol({
 }) {
   return (
     <div>
-      <div className="font-display text-sm font-semibold uppercase tracking-wider text-forest">
+      <div className="font-display text-sm  uppercase tracking-wider text-forest">
         {title}
       </div>
 
@@ -113,7 +135,7 @@ function FooterCol({
               to={to as any}
               className="text-muted-foreground transition-colors hover:text-forest"
               activeProps={{
-                className: "text-forest font-semibold",
+                className: "text-muted-foreground font-normal",
               }}
             >
               {label}
