@@ -13,14 +13,14 @@
 //     server: { entry: "server" },
 //   },
 // });
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-
-  resolve: {
-    tsconfigPaths: true,
+  vite: {
+    server: {
+      host: "0.0.0.0",
+      port: 8080,
+      strictPort: true,
+    },
   },
 });
