@@ -1,12 +1,23 @@
 import type { ReactNode } from "react";
+
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
-export function SiteLayout({ children }: { children: ReactNode }) {
+type SiteLayoutProps = {
+  children: ReactNode;
+};
+
+export function SiteLayout({
+  children,
+}: SiteLayoutProps) {
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen w-full flex-col overflow-x-hidden">
       <Header />
-      <main className="pt-24">{children}</main>
+
+      <main className="w-full flex-1 pt-[72px] sm:pt-[76px]">
+        {children}
+      </main>
+
       <Footer />
     </div>
   );

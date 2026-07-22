@@ -244,7 +244,7 @@ function Home() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="container-wide relative">
+      <section className="relative w-full">
         <div className="relative overflow-hidden rounded-[2.5rem] shadow-elegant">
           <img
             src={images.hero}
