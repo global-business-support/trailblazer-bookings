@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -18,6 +19,9 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   return (
     <SiteLayout>
       <section className="container-wide">
@@ -50,10 +54,38 @@ function Contact() {
 
           <form className="glass space-y-4 rounded-3xl p-6 md:p-8" onSubmit={(e) => e.preventDefault()}>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div><Label>First name</Label><Input placeholder="Elena" className="mt-1 bg-card" /></div>
-              <div><Label>Last name</Label><Input placeholder="Marchetti" className="mt-1 bg-card" /></div>
+              <div><Label>First name</Label><Input
+                value={firstName}
+                onChange={(e) =>
+                  setFirstName(
+                    e.target.value.replace(/[^A-Za-z\s]/g, "")
+                  )
+                }
+                placeholder="Elena"
+                className="mt-1 bg-card"
+              /></div>
+              <div><Label>Last name</Label><Input
+                value={lastName}
+                onChange={(e) =>
+                  setLastName(
+                    e.target.value.replace(/[^A-Za-z\s]/g, "")
+                  )
+                }
+                placeholder="Marchetti"
+                className="mt-1 bg-card"
+              /></div>
               <div><Label>Email</Label><Input type="email" placeholder="you@email.com" className="mt-1 bg-card" /></div>
-              <div><Label>Phone</Label><Input placeholder="+1 415 555 0140" className="mt-1 bg-card" /></div>
+              <div><Label>Phone</Label><Input
+                value={phoneNumber}
+                onChange={(e) =>
+                  setPhoneNumber(
+                    e.target.value.replace(/[^0-9]/g, "")
+                  )
+                }
+                inputMode="numeric"
+                placeholder="4155550140"
+                className="mt-1 bg-card"
+              /></div>
             </div>
             <div><Label>Subject</Label><Input placeholder="How can we help?" className="mt-1 bg-card" /></div>
             <div><Label>Message</Label><Textarea rows={5} placeholder="Tell us about your dream ride..." className="mt-1 bg-card" /></div>

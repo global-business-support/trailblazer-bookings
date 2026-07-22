@@ -33,8 +33,14 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as TrailsIdRouteImport } from './routes/trails.$id'
 import { Route as DashboardWishlistRouteImport } from './routes/dashboard.wishlist'
+import { Route as DashboardWalletRouteImport } from './routes/dashboard.wallet'
+import { Route as DashboardSupportRouteImport } from './routes/dashboard.support'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
 import { Route as DashboardReviewsRouteImport } from './routes/dashboard.reviews'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
+import { Route as DashboardNotificationsRouteImport } from './routes/dashboard.notifications'
+import { Route as DashboardInvoicesRouteImport } from './routes/dashboard.invoices'
+import { Route as DashboardDownloadsRouteImport } from './routes/dashboard.downloads'
 import { Route as DashboardBookingsRouteImport } from './routes/dashboard.bookings'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
@@ -158,6 +164,21 @@ const DashboardWishlistRoute = DashboardWishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardWalletRoute = DashboardWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSupportRoute = DashboardSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -166,6 +187,21 @@ const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardNotificationsRoute = DashboardNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardInvoicesRoute = DashboardInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardDownloadsRoute = DashboardDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardBookingsRoute = DashboardBookingsRouteImport.update({
@@ -202,8 +238,14 @@ export interface FileRoutesByFullPath {
   '/trails': typeof TrailsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -230,8 +272,14 @@ export interface FileRoutesByTo {
   '/trails': typeof TrailsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -261,8 +309,14 @@ export interface FileRoutesById {
   '/trails': typeof TrailsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -293,8 +347,14 @@ export interface FileRouteTypes {
     | '/trails'
     | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin/'
@@ -321,8 +381,14 @@ export interface FileRouteTypes {
     | '/trails'
     | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin'
@@ -351,8 +417,14 @@ export interface FileRouteTypes {
     | '/trails'
     | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin/'
@@ -552,6 +624,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardWishlistRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/wallet': {
+      id: '/dashboard/wallet'
+      path: '/wallet'
+      fullPath: '/dashboard/wallet'
+      preLoaderRoute: typeof DashboardWalletRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/support': {
+      id: '/dashboard/support'
+      path: '/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof DashboardSupportRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/reviews': {
       id: '/dashboard/reviews'
       path: '/reviews'
@@ -564,6 +657,27 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/dashboard/profile'
       preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/notifications': {
+      id: '/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof DashboardNotificationsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/invoices': {
+      id: '/dashboard/invoices'
+      path: '/invoices'
+      fullPath: '/dashboard/invoices'
+      preLoaderRoute: typeof DashboardInvoicesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/downloads': {
+      id: '/dashboard/downloads'
+      path: '/downloads'
+      fullPath: '/dashboard/downloads'
+      preLoaderRoute: typeof DashboardDownloadsRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/bookings': {
@@ -605,16 +719,28 @@ const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface DashboardRouteChildren {
   DashboardBookingsRoute: typeof DashboardBookingsRoute
+  DashboardDownloadsRoute: typeof DashboardDownloadsRoute
+  DashboardInvoicesRoute: typeof DashboardInvoicesRoute
+  DashboardNotificationsRoute: typeof DashboardNotificationsRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardSupportRoute: typeof DashboardSupportRoute
+  DashboardWalletRoute: typeof DashboardWalletRoute
   DashboardWishlistRoute: typeof DashboardWishlistRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBookingsRoute: DashboardBookingsRoute,
+  DashboardDownloadsRoute: DashboardDownloadsRoute,
+  DashboardInvoicesRoute: DashboardInvoicesRoute,
+  DashboardNotificationsRoute: DashboardNotificationsRoute,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardSupportRoute: DashboardSupportRoute,
+  DashboardWalletRoute: DashboardWalletRoute,
   DashboardWishlistRoute: DashboardWishlistRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }

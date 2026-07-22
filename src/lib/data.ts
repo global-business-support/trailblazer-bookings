@@ -213,8 +213,101 @@ export const faqs = [
   { q: "Can I book a fully private experience?", a: "Yes. Any trail can be booked privately for you and your group — toggle the Private option on the booking widget for a live private-ride quote." },
 ];
 
-export const galleryImages = [t1, t2, t3, t4, t5, t6, t7, t8, hero, portrait, t2, t3];
+// export const galleryImages = [t1, t2, t3, t4, t5, t6, t7, t8, hero, portrait, t2, t3];
+// export const galleryImages = [
+//   {
+//     src: t1,
+//     category: "Trails",
+//   },
+//   {
+//     src: t2,
+//     category: "Trails",
+//   },
+//   {
+//     src: t3,
+//     category: "Horses",
+//   },
+//   {
+//     src: portrait,
+//     category: "Horses",
+//   },
+//   {
+//     src: t4,
+//     category: "Adventure",
+//   },
+//   {
+//     src: t5,
+//     category: "Adventure",
+//   },
+//   {
+//     src: hero,
+//     category: "Drone",
+//   },
+//   {
+//     src: t8,
+//     category: "Drone",
+//   },
+//   {
+//     src: t6,
+//     category: "Horses",
+//   },
+//   {
+//     src: t7,
+//     category: "Adventure",
+//   },
+//   {
+//     src: t2,
+//     category: "Trails",
+//   },
+//   {
+//     src: t3,
+//     category: "Horses",
+//   },
+// ];
+export const galleryImages = [
+  // trails
+  // TRAILS
+{ src: "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/533769/pexels-photo-533769.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+{ src: "https://images.pexels.com/photos/210186/pexels-photo-210186.jpeg?auto=compress&cs=tinysrgb&w=1200", category: "Trails" },
+  
 
+// HORSES
+{ src: "https://i.pinimg.com/736x/88/d8/3e/88d83e53b5a21a9e935ccba97f3758e8.jpg", category: "Horses" },
+{ src: "https://images.unsplash.com/photo-1534773728080-33d31da27ae5?auto=format&fit=crop&w=1200&q=80", category: "Horses" },
+{ src: "https://i.pinimg.com/1200x/b2/87/b9/b287b912cda171fb36fe6b2d73bdb1d3.jpg", category: "Horses" },
+{ src: "https://i.pinimg.com/736x/6e/7f/44/6e7f447e8a547f5cd451e3307481ec55.jpg", category: "Horses" },
+{ src: "https://i.pinimg.com/736x/29/3d/1e/293d1e1b2fe21bcc0b2288ec47e30c00.jpg", category: "Horses" },
+{ src: "https://i.pinimg.com/736x/ba/34/ed/ba34ed55241617465d6f0e9cdefd374f.jpg", category: "Horses" },
+{ src: "https://i.pinimg.com/736x/3f/25/95/3f25953e00007c2ead86044454117a6b.jpg", category: "Horses" },
+{ src: "https://i.pinimg.com/736x/a0/50/23/a05023cc7eefed0a38f1dc7491f2f1e6.jpg", category: "Horses" },
+
+// Adventure
+  { src: "https://i.pinimg.com/1200x/ca/12/bf/ca12bf6eededd3609398dc9ceaaac8f8.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/736x/9f/fb/02/9ffb023ea740b52a3c39e50728fbe522.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/736x/88/a0/77/88a0772b8427d825e9394b30cd3d52e5.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/736x/0d/55/14/0d55148c6d9053dd4394367dfdee9368.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/1200x/01/95/a7/0195a770b3e8c5d5796d7aded5ec1a7d.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/736x/33/6a/c9/336ac957e336f5be8b104f6483fd3fca.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/1200x/45/fc/5b/45fc5b52ad394546036e6a9c63059207.jpg", category: "Adventure" },
+  { src: "https://i.pinimg.com/1200x/45/fc/5b/45fc5b52ad394546036e6a9c63059207.jpg", category: "Adventure" },
+
+  // drone
+
+  { src: "https://picsum.photos/id/1050/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1051/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1052/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1053/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1054/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1055/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1056/800/600", category: "Drone" },
+  { src: "https://picsum.photos/id/1057/800/600", category: "Drone" },
+];
 export const posts = [
   { slug: "beginners-guide", title: "A Beginner's Guide to Your First Trail Ride", category: "Tips", date: "Mar 12, 2026", image: t3, excerpt: "Everything you need to know before mounting up for the first time — from what to wear to how to communicate with your horse." },
   { slug: "safety-standards", title: "Behind Our Safety Standards", category: "Safety", date: "Feb 28, 2026", image: t6, excerpt: "How we vet every ranch, guide, and horse before adding them to the Horse Trails marketplace." },
