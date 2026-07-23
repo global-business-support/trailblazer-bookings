@@ -29,14 +29,22 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrailsRouteImport } from './routes/trails'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardBookingsRouteImport } from './routes/dashboard.bookings'
+import { Route as DashboardDownloadsRouteImport } from './routes/dashboard.downloads'
+import { Route as DashboardInvoicesRouteImport } from './routes/dashboard.invoices'
+import { Route as DashboardNotificationsRouteImport } from './routes/dashboard.notifications'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
 import { Route as DashboardReviewsRouteImport } from './routes/dashboard.reviews'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardSupportRouteImport } from './routes/dashboard.support'
+import { Route as DashboardWalletRouteImport } from './routes/dashboard.wallet'
 import { Route as DashboardWishlistRouteImport } from './routes/dashboard.wishlist'
 import { Route as TrailsIdRouteImport } from './routes/trails.$id'
 
@@ -140,6 +148,11 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -160,6 +173,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -170,6 +188,21 @@ const DashboardBookingsRoute = DashboardBookingsRouteImport.update({
   path: '/bookings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardDownloadsRoute = DashboardDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardInvoicesRoute = DashboardInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardNotificationsRoute = DashboardNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -178,6 +211,21 @@ const DashboardProfileRoute = DashboardProfileRouteImport.update({
 const DashboardReviewsRoute = DashboardReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSupportRoute = DashboardSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWalletRoute = DashboardWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardWishlistRoute = DashboardWishlistRouteImport.update({
@@ -196,7 +244,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/availability': typeof AvailabilityRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -212,12 +260,20 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trails': typeof TrailsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -227,7 +283,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/availability': typeof AvailabilityRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -242,12 +298,20 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trails': typeof TrailsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -259,7 +323,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/availability': typeof AvailabilityRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -275,12 +339,20 @@ export interface FileRoutesById {
   '/products': typeof ProductsRoute
   '/refund-policy': typeof RefundPolicyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trails': typeof TrailsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/bookings': typeof DashboardBookingsRoute
+  '/dashboard/downloads': typeof DashboardDownloadsRoute
+  '/dashboard/invoices': typeof DashboardInvoicesRoute
+  '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/reviews': typeof DashboardReviewsRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/dashboard/wallet': typeof DashboardWalletRoute
   '/dashboard/wishlist': typeof DashboardWishlistRoute
   '/trails/$id': typeof TrailsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -309,12 +381,20 @@ export interface FileRouteTypes {
     | '/products'
     | '/refund-policy'
     | '/register'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/trails'
+    | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin/'
@@ -339,12 +419,20 @@ export interface FileRouteTypes {
     | '/products'
     | '/refund-policy'
     | '/register'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/trails'
+    | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin'
@@ -371,12 +459,20 @@ export interface FileRouteTypes {
     | '/products'
     | '/refund-policy'
     | '/register'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/trails'
+    | '/blog/$slug'
     | '/dashboard/bookings'
+    | '/dashboard/downloads'
+    | '/dashboard/invoices'
+    | '/dashboard/notifications'
     | '/dashboard/profile'
     | '/dashboard/reviews'
+    | '/dashboard/settings'
+    | '/dashboard/support'
+    | '/dashboard/wallet'
     | '/dashboard/wishlist'
     | '/trails/$id'
     | '/admin/'
@@ -388,7 +484,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   AvailabilityRoute: typeof AvailabilityRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
@@ -404,6 +500,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TrailsRoute: typeof TrailsRouteWithChildren
@@ -551,6 +648,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -579,6 +683,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -593,6 +704,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardBookingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/downloads': {
+      id: '/dashboard/downloads'
+      path: '/downloads'
+      fullPath: '/dashboard/downloads'
+      preLoaderRoute: typeof DashboardDownloadsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/invoices': {
+      id: '/dashboard/invoices'
+      path: '/invoices'
+      fullPath: '/dashboard/invoices'
+      preLoaderRoute: typeof DashboardInvoicesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/notifications': {
+      id: '/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof DashboardNotificationsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/profile': {
       id: '/dashboard/profile'
       path: '/profile'
@@ -605,6 +737,27 @@ declare module '@tanstack/react-router' {
       path: '/reviews'
       fullPath: '/dashboard/reviews'
       preLoaderRoute: typeof DashboardReviewsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/support': {
+      id: '/dashboard/support'
+      path: '/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof DashboardSupportRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/wallet': {
+      id: '/dashboard/wallet'
+      path: '/wallet'
+      fullPath: '/dashboard/wallet'
+      preLoaderRoute: typeof DashboardWalletRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/wishlist': {
@@ -634,18 +787,40 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 interface DashboardRouteChildren {
   DashboardBookingsRoute: typeof DashboardBookingsRoute
+  DashboardDownloadsRoute: typeof DashboardDownloadsRoute
+  DashboardInvoicesRoute: typeof DashboardInvoicesRoute
+  DashboardNotificationsRoute: typeof DashboardNotificationsRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardReviewsRoute: typeof DashboardReviewsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardSupportRoute: typeof DashboardSupportRoute
+  DashboardWalletRoute: typeof DashboardWalletRoute
   DashboardWishlistRoute: typeof DashboardWishlistRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBookingsRoute: DashboardBookingsRoute,
+  DashboardDownloadsRoute: DashboardDownloadsRoute,
+  DashboardInvoicesRoute: DashboardInvoicesRoute,
+  DashboardNotificationsRoute: DashboardNotificationsRoute,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardReviewsRoute: DashboardReviewsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardSupportRoute: DashboardSupportRoute,
+  DashboardWalletRoute: DashboardWalletRoute,
   DashboardWishlistRoute: DashboardWishlistRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
@@ -670,7 +845,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   AvailabilityRoute: AvailabilityRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
@@ -686,6 +861,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRoute,
   RefundPolicyRoute: RefundPolicyRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TrailsRoute: TrailsRouteWithChildren,
