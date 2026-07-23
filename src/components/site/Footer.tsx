@@ -80,7 +80,7 @@ export function Footer() {
             <div className="flex items-center gap-2">
               <div className="gradient-forest grid h-10 w-10 place-items-center rounded-xl text-forest-foreground">
                 <span className="font-display text-lg font-bold">
-                  H
+                  h
                 </span>
               </div>
 
