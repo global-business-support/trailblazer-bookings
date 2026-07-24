@@ -642,10 +642,35 @@ function MyBookings() {
   const [ticketOpen, setTicketOpen] =
     useState(false);
 
-  useEffect(() => {
+   useEffect(() => {
+  const refreshBookings = () => {
     setBookings(getBookings());
-  }, []);
+  };
 
+  refreshBookings();
+
+  window.addEventListener(
+    "horse-trails-data-updated",
+    refreshBookings,
+  );
+
+  window.addEventListener(
+    "storage",
+    refreshBookings,
+  );
+
+  return () => {
+    window.removeEventListener(
+      "horse-trails-data-updated",
+      refreshBookings,
+    );
+
+    window.removeEventListener(
+      "storage",
+      refreshBookings,
+    );
+  };
+}, []);
   const filteredBookings = useMemo(() => {
     const keyword = search
       .trim()

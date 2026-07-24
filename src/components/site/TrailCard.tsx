@@ -398,10 +398,12 @@ export function TrailCard({
                 event.stopPropagation();
               }}
             >
-              <BookingPopup
-                trailName={trailName}
-                price={trail.price}
-              />
+             <BookingPopup
+  trailName={trailName}
+  price={trail.price}
+  location={location}
+  productId={Number(trail.id)}
+/>
             </div>
           </div>
         </div>

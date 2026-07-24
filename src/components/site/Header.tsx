@@ -31,10 +31,6 @@ const mainNav = [
     label: "Experiences",
   },
   {
-    to: "/my-bookings",
-    label: "My Bookings",
-  },
-  {
     to: "/performance",
     label: "Performance",
   },
