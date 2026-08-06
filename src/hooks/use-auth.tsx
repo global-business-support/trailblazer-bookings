@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import type { User, Session } from "@supabase/supabase-js";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://trailblazer-backend-1.onrender.com";
 
 export type AppRole =
   | "super_admin"
@@ -12,9 +12,15 @@ export type AppRole =
   | "booking_manager"
   | "customer";
 
+export type User = {
+  id: string;
+  email: string;
+  name?: string;
+};
+
 export type AuthState = {
   user: User | null;
-  session: Session | null;
+  token: string | null;
   roles: AppRole[];
   loading: boolean;
   isAdmin: boolean;
@@ -28,55 +34,60 @@ export function useAuth(): AuthState & {
   refreshRoles: () => Promise<void>;
 } {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [roles, setRoles] = useState<AppRole[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadRoles = useCallback(async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId);
-    setRoles((data ?? []).map((r) => r.role as AppRole));
+  const loadUserProfile = useCallback(async (authToken: string) => {
+    try {
+      const response = await fetch(`${API_URL}/api/v1/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        setRoles(data.roles ?? []);
+      } else {
+        // Token invalid ya expire ho gaya ho toh logout karein
+        localStorage.removeItem("access_token");
+        setToken(null);
+        setUser(null);
+        setRoles([]);
+      }
+    } catch (error) {
+      console.error("Failed to load user profile:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    // Register listener first (identity transitions only)
-    const { data: sub } = supabase.auth.onAuthStateChange((event, sess) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      setSession(sess);
-      setUser(sess?.user ?? null);
-      if (sess?.user) {
-        // Defer to avoid deadlock inside the listener
-        setTimeout(() => void loadRoles(sess.user.id), 0);
-      } else {
-        setRoles([]);
-      }
-    });
-
-    // Bootstrap current session
-    void supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      if (data.session?.user) await loadRoles(data.session.user.id);
+    const savedToken = localStorage.getItem("access_token");
+    if (savedToken) {
+      setToken(savedToken);
+      void loadUserProfile(savedToken);
+    } else {
       setLoading(false);
-    });
-
-    return () => sub.subscription.unsubscribe();
-  }, [loadRoles]);
+    }
+  }, [loadUserProfile]);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem("access_token");
+    setToken(null);
+    setUser(null);
     setRoles([]);
   }, []);
 
   const refreshRoles = useCallback(async () => {
-    if (user) await loadRoles(user.id);
-  }, [user, loadRoles]);
+    if (token) await loadUserProfile(token);
+  }, [token, loadUserProfile]);
 
   return {
     user,
-    session,
+    token,
     roles,
     loading,
     isAdmin: roles.includes("super_admin") || roles.includes("admin"),

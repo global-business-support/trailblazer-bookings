@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
 import { DollarSign, CalendarCheck, Users, Compass, Store, AlertTriangle, TrendingUp, CircleDollarSign } from "lucide-react";
 import { getAdminDashboardStats } from "@/lib/admin.functions";
@@ -28,10 +27,9 @@ function StatCard({ icon: Icon, label, value, sub, tone = "forest" }: { icon: an
 }
 
 function AdminOverview() {
-  const fn = useServerFn(getAdminDashboardStats);
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-dashboard"],
-    queryFn: () => fn(),
+    queryFn: getAdminDashboardStats,
   });
 
   if (isLoading) return <div className="text-sm text-muted-foreground">Loading dashboard…</div>;

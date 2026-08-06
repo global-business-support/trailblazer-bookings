@@ -1,55 +1,33 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-} from "lucide-react";
-import {
-  useState,
-  type FormEvent,
-} from "react";
+import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import { Loader2, Lock, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const Route =
-  createFileRoute("/reset-password")({
-    head: () => ({
-      meta: [
-        {
-          title: "Reset password — Horse Trails",
-        },
-      ],
-    }),
+const API_URL = import.meta.env.VITE_API_URL || "https://trailblazer-backend-1.onrender.com";
 
-    component: ResetPasswordPage,
-  });
+export const Route = createFileRoute("/reset-password")({
+  component: ResetPasswordPage,
+});
 
 function ResetPasswordPage() {
   const navigate = useNavigate();
+  const search: { token?: string } = useSearch({ strict: false });
+  const token = search?.token || "";
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const [showPassword, setShowPassword] =
-    useState(false);
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
-    event.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    if (password.length < 8) {
-      toast.error(
-        "Password must contain at least 8 characters.",
-      );
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
       return;
     }
 
@@ -61,140 +39,107 @@ function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      const { error } =
-        await supabase.auth.updateUser({
-          password,
-        });
+      const response = await fetch(`${API_URL}/api/v1/auth/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          new_password: password,
+        }),
+      });
 
-      if (error) {
-        toast.error(error.message);
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.detail || data.message || "Failed to reset password.");
         return;
       }
 
-      toast.success(
-        "Password updated successfully.",
-      );
+      setSubmitted(true);
+      toast.success("Password updated successfully!");
 
-      await navigate({
-        to: "/login",
-      });
-    } catch (error) {
-      console.error(
-        "Password update error:",
-        error,
-      );
-
-      toast.error(
-        "Unable to update password.",
-      );
+      setTimeout(() => {
+        navigate({ to: "/login" });
+      }, 3000);
+    } catch (error: any) {
+      console.error("Reset password error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background p-6">
-      <div className="w-full max-w-md rounded-3xl border border-border bg-card p-7 shadow-elegant sm:p-9">
-        <h1 className="font-display text-3xl font-bold text-forest">
-          Create new password
-        </h1>
+    <div className="container-narrow flex min-h-[70vh] items-center justify-center py-12">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">Reset Your Password</CardTitle>
+          <CardDescription>
+            {submitted
+              ? "Your password has been changed."
+              : "Enter your new password below."}
+          </CardDescription>
+        </CardHeader>
 
-        <p className="mt-2 text-sm text-muted-foreground">
-          Enter and confirm your new password.
-        </p>
+        <CardContent>
+          {submitted ? (
+            <div className="flex flex-col items-center justify-center space-y-4 py-6 text-center">
+              <CheckCircle2 className="h-12 w-12 animate-bounce text-green-500" />
+              <p className="text-sm text-muted-foreground">
+                Redirecting to login page in 3 seconds...
+              </p>
+              <Button onClick={() => navigate({ to: "/login" })} className="mt-2 w-full">
+                Go to Login Now
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">New Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-9"
+                    required
+                  />
+                </div>
+              </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-8 space-y-5"
-        >
-          <div>
-            <Label htmlFor="new-password">
-              New password
-            </Label>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Confirm New Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="pl-9"
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="relative mt-2">
-              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-              <Input
-                id="new-password"
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
-                required
-                minLength={8}
-                value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
-                className="px-9"
-                placeholder="Minimum 8 characters"
-              />
-
-              <button
-                type="button"
-                onClick={() =>
-                  setShowPassword(
-                    (current) => !current,
-                  )
-                }
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
+              <Button type="submit" disabled={loading} className="mt-6 w-full bg-forest">
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Updating Password...
+                  </>
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  "Reset Password"
                 )}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="confirm-password">
-              Confirm password
-            </Label>
-
-            <div className="relative mt-2">
-              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-              <Input
-                id="confirm-password"
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
-                required
-                minLength={8}
-                value={confirmPassword}
-                onChange={(event) =>
-                  setConfirmPassword(
-                    event.target.value,
-                  )
-                }
-                className="pl-9"
-                placeholder="Enter password again"
-              />
-            </div>
-          </div>
-
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-forest text-forest-foreground hover:bg-forest/90"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Updating...
-              </>
-            ) : (
-              "Update password"
-            )}
-          </Button>
-        </form>
-      </div>
-    </main>
+              </Button>
+            </form>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }

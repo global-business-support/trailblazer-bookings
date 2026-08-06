@@ -30,14 +30,14 @@ const mainNav = [
     to: "/experiences",
     label: "Experiences",
   },
-  {
-    to: "/performance",
-    label: "Performance",
-  },
-  {
-    to: "/availability",
-    label: "Availability",
-  },
+  // {
+  //   to: "/performance",
+  //   label: "Performance",
+  // },
+  // {
+  //   to: "/availability",
+  //   label: "Availability",
+  // },
   {
     to: "/products",
     label: "Products",

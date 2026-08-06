@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://trailblazer-backend-1.onrender.com";
+
 export function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [joining, setJoining] = useState(false);
@@ -33,8 +35,7 @@ export function Footer() {
       return;
     }
 
-    const emailPattern =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailPattern.test(cleanedEmail)) {
       toast.error("Please enter a valid email address.");
@@ -44,17 +45,29 @@ export function Footer() {
     setJoining(true);
 
     try {
-      // Temporary frontend submission.
-      // Later Supabase/backend integration can be added here.
-      await new Promise((resolve) =>
-        window.setTimeout(resolve, 700),
-      );
+      // Integration with FastAPI backend endpoint
+      const response = await fetch(`${API_URL}/api/v1/newsletter/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: cleanedEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(
+          data.detail || data.message || "Unable to join newsletter. Please try again.",
+        );
+        return;
+      }
 
       setJoined(true);
       setNewsletterEmail("");
 
       toast.success(
-        "You have successfully joined the Horse Trails newsletter!",
+        data.message || "You have successfully joined the Horse Trails newsletter!",
       );
 
       window.setTimeout(() => {

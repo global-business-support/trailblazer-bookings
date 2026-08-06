@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { images } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+
+// Relative path `/api` Vite proxy ke through request forward karega (CORS fix)
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export const Route = createFileRoute("/register")({
   head: () => ({ meta: [{ title: "Create account — Horse Trails" }] }),
@@ -23,49 +24,84 @@ function Register() {
   const [password, setPassword] = useState("");
   const [accepted, setAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     if (!accepted) {
       toast.error("Please accept the terms");
       return;
     }
+
     if (password.length < 8) {
       toast.error("Password must be at least 8 characters");
       return;
     }
+
+    const cleanedEmail = email.trim();
+
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: `${firstName} ${lastName}`.trim() },
-      },
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+
+    try {
+      // FIX: URL changed from /api/v1/auth/register to /api/auth/register
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          email: cleanedEmail,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.detail || data.message || "Registration failed. Please try again.");
+        return;
+      }
+
+      // Save JWT Token
+      if (data.access_token) {
+        window.localStorage.setItem("access_token", data.access_token);
+      }
+
+      toast.success("Account created — welcome to Horse Trails");
+      await navigate({ to: "/dashboard" });
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Unable to create account. Please try again.");
+    } finally {
+      setBusy(false);
     }
-    toast.success("Account created — welcome to Horse Trails");
-    navigate({ to: "/dashboard" });
   }
 
   async function onGoogle() {
-    const res = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (res.error) toast.error(res.error.message ?? "Google sign-in failed");
-    else if (!res.redirected) navigate({ to: "/dashboard" });
+    setGoogleLoading(true);
+    try {
+      // FIX: URL changed to /api/auth/google/login
+      window.location.href = `${API_URL}/api/auth/google/login`;
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast.error("Google sign-in failed. Please try again.");
+      setGoogleLoading(false);
+    }
   }
+
+  const anyLoading = busy || googleLoading;
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex items-center justify-center p-6 md:p-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
           <Link to="/" className="mb-6 inline-flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-xl gradient-forest text-forest-foreground"><span className="font-display font-bold">H</span></div>
+            <div className="grid h-10 w-10 place-items-center rounded-xl gradient-forest text-forest-foreground">
+              <span className="font-display font-bold">H</span>
+            </div>
             <span className="font-display text-lg font-bold text-forest">Horse Trails</span>
           </Link>
           <h1 className="font-display text-3xl font-bold text-forest md:text-4xl">Create your account</h1>
@@ -73,16 +109,72 @@ function Register() {
 
           <form className="mt-8 space-y-4" onSubmit={onSubmit}>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div><Label>First name</Label><Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Elena" className="mt-1 bg-card" /></div>
-              <div><Label>Last name</Label><Input required value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Marchetti" className="mt-1 bg-card" /></div>
+              <div>
+                <Label>First name</Label>
+                <Input
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Elena"
+                  className="mt-1 bg-card"
+                  disabled={anyLoading}
+                />
+              </div>
+              <div>
+                <Label>Last name</Label>
+                <Input
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Marchetti"
+                  className="mt-1 bg-card"
+                  disabled={anyLoading}
+                />
+              </div>
             </div>
-            <div><Label>Email</Label><Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" className="mt-1 bg-card" /></div>
-            <div><Label>Password</Label><Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 8 characters" className="mt-1 bg-card" /></div>
+            <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@email.com"
+                className="mt-1 bg-card"
+                disabled={anyLoading}
+              />
+            </div>
+            <div>
+              <Label>Password</Label>
+              <Input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 8 characters"
+                className="mt-1 bg-card"
+                disabled={anyLoading}
+              />
+            </div>
             <label className="flex items-start gap-2 text-sm text-muted-foreground">
-              <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} className="mt-1 rounded" />
-              <span>I agree to the <a href="#" className="text-forest">Terms</a> and <a href="#" className="text-forest">Privacy Policy</a>.</span>
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+                className="mt-1 rounded"
+                disabled={anyLoading}
+              />
+              <span>
+                I agree to the <a href="#" className="text-forest">Terms</a> and{" "}
+                <a href="#" className="text-forest">Privacy Policy</a>.
+              </span>
             </label>
-            <Button size="lg" disabled={busy} className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90">
+            <Button
+              type="submit"
+              size="lg"
+              disabled={anyLoading}
+              className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90"
+            >
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
             </Button>
 
@@ -90,19 +182,35 @@ function Register() {
               <span className="relative z-10 bg-background px-3">or</span>
               <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
             </div>
-            <Button type="button" variant="outline" className="w-full" onClick={onGoogle}>Continue with Google</Button>
 
-            <div className="pt-4 text-center text-sm text-muted-foreground">Already a rider? <Link to="/login" className="font-semibold text-forest hover:underline">Sign in</Link></div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={onGoogle}
+              disabled={anyLoading}
+            >
+              {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
+            </Button>
+
+            <div className="pt-4 text-center text-sm text-muted-foreground">
+              Already a rider?{" "}
+              <Link to="/login" className="font-semibold text-forest hover:underline">
+                Sign in
+              </Link>
+            </div>
           </form>
         </motion.div>
       </div>
       <div className="relative hidden lg:block">
-        <img src={images.t5} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={images.t5} alt="Horse rider on trail" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-tl from-forest/90 to-forest/30" />
         <div className="relative flex h-full items-end p-12 text-forest-foreground">
           <div>
             <div className="font-display text-4xl font-bold">Join 68,000 riders.</div>
-            <div className="mt-3 text-forest-foreground/70">Members save on average $184 per booking with rider rewards.</div>
+            <div className="mt-3 text-forest-foreground/70">
+              Members save on average $184 per booking with rider rewards.
+            </div>
           </div>
         </div>
       </div>

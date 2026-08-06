@@ -1,7 +1,7 @@
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
 
+@source "../src";
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -280,45 +280,13 @@
     color-mix(in oklab, var(--gold) 45%, transparent);
 }
 
-/*
-  Full-screen responsive container.
-  No max-width restriction.
-*/
 @utility container-wide {
   width: 100%;
   max-width: none;
   margin-inline: 0;
   padding-inline: 1rem;
-
-  @media (min-width: 640px) {
-    padding-inline: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    padding-inline: 2rem;
-  }
-
-  @media (min-width: 1024px) {
-    padding-inline: 3rem;
-  }
-
-  @media (min-width: 1280px) {
-    padding-inline: 3.5rem;
-  }
-
-  @media (min-width: 1440px) {
-    padding-inline: 4rem;
-  }
-
-  @media (min-width: 1920px) {
-    padding-inline: 5rem;
-  }
 }
 
-/*
-  Use this utility where a section needs to touch
-  both left and right browser edges.
-*/
 @utility full-bleed {
   width: 100vw;
   max-width: 100vw;
@@ -332,6 +300,30 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+@media (min-width: 640px) {
+  .container-wide { padding-inline: 1.5rem; }
+}
+
+@media (min-width: 768px) {
+  .container-wide { padding-inline: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .container-wide { padding-inline: 3rem; }
+}
+
+@media (min-width: 1280px) {
+  .container-wide { padding-inline: 3.5rem; }
+}
+
+@media (min-width: 1440px) {
+  .container-wide { padding-inline: 4rem; }
+}
+
+@media (min-width: 1920px) {
+  .container-wide { padding-inline: 5rem; }
 }
 
 @media (max-width: 767px) {

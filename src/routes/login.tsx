@@ -1,130 +1,3 @@
-// import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-// import { motion } from "framer-motion";
-// import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
-// import { useState } from "react";
-// import { toast } from "sonner";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { images } from "@/lib/data";
-// import { supabase } from "@/integrations/supabase/client";
-// import { lovable } from "@/integrations/lovable";
-
-// export const Route = createFileRoute("/login")({
-//   head: () => ({
-//     meta: [{ title: "Sign in — Horse Trails" }, { name: "description", content: "Sign in to your Horse Trails account." }],
-//   }),
-//   component: Login,
-// });
-
-// function Login() {
-//   const navigate = useNavigate();
-//   const [show, setShow] = useState(false);
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [busy, setBusy] = useState(false);
-
-//   async function onSubmit(e: React.FormEvent) {
-//     e.preventDefault();
-//     setBusy(true);
-//     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-//     setBusy(false);
-//     if (error) {
-//       toast.error(error.message);
-//       return;
-//     }
-//     // Log login
-//     if (data.user) {
-//       await supabase.from("login_history").insert({
-//         user_id: data.user.id,
-//         user_agent: navigator.userAgent,
-//         success: true,
-//       });
-//     }
-//     toast.success("Welcome back");
-//     navigate({ to: "/dashboard" });
-//   }
-
-//   async function onGoogle() {
-//     const res = await lovable.auth.signInWithOAuth("google", {
-//       redirect_uri: window.location.origin,
-//     });
-//     if (res.error) toast.error(res.error.message ?? "Google sign-in failed");
-//     else if (!res.redirected) navigate({ to: "/dashboard" });
-//   }
-
-//   return (
-//     <div className="grid min-h-screen lg:grid-cols-2">
-//       <div className="relative hidden lg:block">
-//         <img src={images.hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
-//         <div className="absolute inset-0 bg-gradient-to-br from-forest/90 to-forest/40" />
-//         <div className="relative flex h-full flex-col justify-between p-12 text-forest-foreground">
-//           <Link to="/" className="inline-flex items-center gap-2">
-//             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gold text-gold-foreground"><span className="font-display font-bold">H</span></div>
-//             <span className="font-display text-lg font-bold">Horse Trails</span>
-//           </Link>
-//           <div>
-//             <div className="font-display text-4xl font-bold">The world's finest saddles are one login away.</div>
-//             <div className="mt-3 text-forest-foreground/70">Sign in to manage bookings, wishlists, and members-only pricing.</div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="flex items-center justify-center p-6 md:p-12">
-//         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-//           <div className="lg:hidden mb-6">
-//             <Link to="/" className="inline-flex items-center gap-2">
-//               <div className="grid h-10 w-10 place-items-center rounded-xl gradient-forest text-forest-foreground"><span className="font-display font-bold">H</span></div>
-//               <span className="font-display text-lg font-bold text-forest">Horse Trails</span>
-//             </Link>
-//           </div>
-//           <h1 className="font-display text-3xl font-bold text-forest md:text-4xl">Welcome back</h1>
-//           <p className="mt-2 text-sm text-muted-foreground">Sign in to your account to continue.</p>
-
-//           <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-//             <div>
-//               <Label>Email</Label>
-//               <div className="relative mt-1">
-//                 <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-//                 <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" className="pl-9 bg-card" />
-//               </div>
-//             </div>
-//             <div>
-//               <Label>Password</Label>
-//               <div className="relative mt-1">
-//                 <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-//                 <Input type={show ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="px-9 bg-card" />
-//                 <button type="button" onClick={() => setShow((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-//                   {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-//                 </button>
-//               </div>
-//             </div>
-//             <div className="flex items-center justify-between text-sm">
-//               <label className="flex items-center gap-2"><input type="checkbox" className="rounded" /> Remember me</label>
-//               <Link to="/login" className="text-forest hover:underline">Forgot password?</Link>
-//             </div>
-//             <Button size="lg" disabled={busy} className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90">
-//               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
-//             </Button>
-
-//             <div className="relative my-6 text-center text-xs text-muted-foreground">
-//               <span className="relative z-10 bg-background px-3">or continue with</span>
-//               <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
-//             </div>
-//             <div className="grid gap-2 sm:grid-cols-2">
-//               <Button type="button" variant="outline" onClick={onGoogle}>Google</Button>
-//               <Button type="button" variant="outline" disabled title="Apple sign-in coming soon">Apple</Button>
-//             </div>
-
-//             <div className="pt-4 text-center text-sm text-muted-foreground">
-//               Don't have an account? <Link to="/register" className="font-semibold text-forest hover:underline">Register</Link>
-//             </div>
-//           </form>
-//         </motion.div>
-//       </div>
-//     </div>
-//   );
-// }
 import {
   createFileRoute,
   Link,
@@ -158,7 +31,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { images } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
+
+// Relative path `/api` use karne par Vite Proxy target server (Render) par route karega
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -189,18 +64,16 @@ function Login() {
   const [signInLoading, setSignInLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  const [forgotPasswordOpen, setForgotPasswordOpen] =
-    useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
     try {
-      const rememberedEmail =
-        window.localStorage.getItem(
-          "horse-trails-remembered-email",
-        );
+      const rememberedEmail = window.localStorage.getItem(
+        "horse-trails-remembered-email"
+      );
 
       if (rememberedEmail) {
         setEmail(rememberedEmail);
@@ -211,9 +84,7 @@ function Login() {
     }
   }, []);
 
-  async function onSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const cleanedEmail = email.trim();
@@ -231,50 +102,44 @@ function Login() {
     setSignInLoading(true);
 
     try {
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
+      // FIX: URL changed from /api/v1/auth/login to /api/auth/login
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           email: cleanedEmail,
-          password,
-        });
+          password: password,
+        }),
+      });
 
-      if (error) {
-        toast.error(error.message);
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.detail || data.message || "Invalid credentials.");
         return;
+      }
+
+      // Save JWT Token
+      if (data.access_token) {
+        window.localStorage.setItem("access_token", data.access_token);
       }
 
       if (rememberMe) {
         try {
           window.localStorage.setItem(
             "horse-trails-remembered-email",
-            cleanedEmail,
+            cleanedEmail
           );
         } catch {
           // Ignore storage errors.
         }
       } else {
         try {
-          window.localStorage.removeItem(
-            "horse-trails-remembered-email",
-          );
+          window.localStorage.removeItem("horse-trails-remembered-email");
         } catch {
           // Ignore storage errors.
-        }
-      }
-
-      if (data.user) {
-        const { error: historyError } = await supabase
-          .from("login_history")
-          .insert({
-            user_id: data.user.id,
-            user_agent: navigator.userAgent,
-            success: true,
-          });
-
-        if (historyError) {
-          console.warn(
-            "Login history was not saved:",
-            historyError.message,
-          );
         }
       }
 
@@ -285,10 +150,7 @@ function Login() {
       });
     } catch (error) {
       console.error("Sign-in error:", error);
-
-      toast.error(
-        "Unable to sign in. Please try again.",
-      );
+      toast.error("Unable to sign in. Please try again.");
     } finally {
       setSignInLoading(false);
     }
@@ -296,34 +158,11 @@ function Login() {
 
   async function onGoogle() {
     setGoogleLoading(true);
-
     try {
-      const redirectTo = `${window.location.origin}/dashboard`;
-
-      const { error } =
-        await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: {
-            redirectTo,
-          },
-        });
-
-      if (error) {
-        toast.error(error.message);
-        setGoogleLoading(false);
-      }
-
-      /*
-       * Successful OAuth automatically redirects to Google.
-       * Isliye yahan navigate() nahi lagana.
-       */
+      window.location.href = `${API_URL}/api/auth/google/login`;
     } catch (error) {
       console.error("Google login error:", error);
-
-      toast.error(
-        "Google sign-in failed. Please try again.",
-      );
-
+      toast.error("Google sign-in failed. Please try again.");
       setGoogleLoading(false);
     }
   }
@@ -333,9 +172,7 @@ function Login() {
     setForgotPasswordOpen(true);
   }
 
-  async function handleForgotPassword(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function handleForgotPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const cleanedResetEmail = resetEmail.trim();
@@ -348,39 +185,37 @@ function Login() {
     setResetLoading(true);
 
     try {
-      const redirectTo = `${window.location.origin}/reset-password`;
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: cleanedResetEmail,
+        }),
+      });
 
-      const { error } =
-        await supabase.auth.resetPasswordForEmail(
-          cleanedResetEmail,
-          {
-            redirectTo,
-          },
-        );
+      const data = await response.json();
 
-      if (error) {
-        toast.error(error.message);
+      if (!response.ok) {
+        toast.error(data.detail || data.message || "Unable to send reset link.");
         return;
       }
 
       toast.success(
-        "Password reset link sent. Please check your email.",
+        "Password reset link sent. Please check your email."
       );
 
       setForgotPasswordOpen(false);
     } catch (error) {
       console.error("Password reset error:", error);
-
-      toast.error(
-        "Unable to send reset link. Please try again.",
-      );
+      toast.error("Unable to send reset link. Please try again.");
     } finally {
       setResetLoading(false);
     }
   }
 
-  const anyLoading =
-    signInLoading || googleLoading;
+  const anyLoading = signInLoading || googleLoading;
 
   return (
     <>
@@ -413,13 +248,11 @@ function Login() {
 
             <div>
               <div className="font-display text-4xl font-bold">
-                The world's finest saddles are one
-                login away.
+                The world's finest saddles are one login away.
               </div>
 
               <div className="mt-3 text-forest-foreground/70">
-                Sign in to manage bookings, wishlists,
-                and members-only pricing.
+                Sign in to manage bookings, wishlists, and members-only pricing.
               </div>
             </div>
           </div>
@@ -523,7 +356,7 @@ function Login() {
                     type="button"
                     onClick={() =>
                       setShowPassword(
-                        (current) => !current,
+                        (current) => !current
                       )
                     }
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-forest"
@@ -550,7 +383,7 @@ function Login() {
                     checked={rememberMe}
                     onChange={(event) =>
                       setRememberMe(
-                        event.target.checked,
+                        event.target.checked
                       )
                     }
                     className="rounded"
@@ -653,8 +486,7 @@ function Login() {
             </DialogTitle>
 
             <DialogDescription>
-              Enter your account email and we will
-              send you a password reset link.
+              Enter your account email and we will send you a password reset link.
             </DialogDescription>
           </DialogHeader>
 
@@ -678,7 +510,7 @@ function Login() {
                   value={resetEmail}
                   onChange={(event) =>
                     setResetEmail(
-                      event.target.value,
+                      event.target.value
                     )
                   }
                   placeholder="you@email.com"
