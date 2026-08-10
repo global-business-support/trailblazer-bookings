@@ -1,12 +1,16 @@
+
 // import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 // import { motion } from "framer-motion";
 // import { useState } from "react";
 // import { toast } from "sonner";
 // import { Loader2 } from "lucide-react";
+
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 // import { images } from "@/lib/data";
+
+
 
 // // Relative path `/api` Vite proxy ke through request forward karega (CORS fix)
 // const API_URL = import.meta.env.VITE_API_URL || "";
@@ -44,7 +48,6 @@
 //     setBusy(true);
 
 //     try {
-//       // FIX: URL changed from /api/v1/auth/register to /api/auth/register
 //       const response = await fetch(`${API_URL}/api/auth/register`, {
 //         method: "POST",
 //         headers: {
@@ -61,7 +64,9 @@
 //       const data = await response.json();
 
 //       if (!response.ok) {
-//         toast.error(data.detail || data.message || "Registration failed. Please try again.");
+//         toast.error(
+//           data.detail || data.message || "Registration failed. Please try again."
+//         );
 //         return;
 //       }
 
@@ -80,32 +85,52 @@
 //     }
 //   }
 
-// async function onGoogle() {
-//   setGoogleLoading(true);
-//   try {
-//     // Supabase initiate function bypass karke direct FastAPI OAuth hit karein
-//     window.location.href = "https://trailblazer-backend-1.onrender.com/api/v1/auth/google/login";
-//   } catch (error) {
-//     console.error("Google sign-in error:", error);
-//     toast.error("Google sign-in failed. Please try again.");
-//     setGoogleLoading(false);
+//   // FIXED: Supabase OAuth Integration
+//   async function onGoogle() {
+//     setGoogleLoading(true);
+//     try {
+//       const { error } = await supabase.auth.signInWithOAuth({
+//         provider: "google",
+//         options: {
+//           redirectTo: `${window.location.origin}/dashboard`,
+//         },
+//       });
+
+//       if (error) {
+//         toast.error(error.message);
+//         setGoogleLoading(false);
+//       }
+//     } catch (error) {
+//       console.error("Google sign-in error:", error);
+//       toast.error("Google sign-in failed. Please try again.");
+//       setGoogleLoading(false);
+//     }
 //   }
-// }
 
 //   const anyLoading = busy || googleLoading;
 
 //   return (
 //     <div className="grid min-h-screen lg:grid-cols-2">
 //       <div className="flex items-center justify-center p-6 md:p-12">
-//         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
+//         <motion.div
+//           initial={{ opacity: 0, y: 20 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           className="w-full max-w-md"
+//         >
 //           <Link to="/" className="mb-6 inline-flex items-center gap-2">
 //             <div className="grid h-10 w-10 place-items-center rounded-xl gradient-forest text-forest-foreground">
 //               <span className="font-display font-bold">H</span>
 //             </div>
-//             <span className="font-display text-lg font-bold text-forest">Horse Trails</span>
+//             <span className="font-display text-lg font-bold text-forest">
+//               Horse Trails
+//             </span>
 //           </Link>
-//           <h1 className="font-display text-3xl font-bold text-forest md:text-4xl">Create your account</h1>
-//           <p className="mt-2 text-sm text-muted-foreground">Book faster, save favourites, and earn rider rewards.</p>
+//           <h1 className="font-display text-3xl font-bold text-forest md:text-4xl">
+//             Create your account
+//           </h1>
+//           <p className="mt-2 text-sm text-muted-foreground">
+//             Book faster, save favourites, and earn rider rewards.
+//           </p>
 
 //           <form className="mt-8 space-y-4" onSubmit={onSubmit}>
 //             <div className="grid gap-4 sm:grid-cols-2">
@@ -175,7 +200,11 @@
 //               disabled={anyLoading}
 //               className="w-full bg-forest text-forest-foreground shadow-glow hover:bg-forest/90"
 //             >
-//               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
+//               {busy ? (
+//                 <Loader2 className="h-4 w-4 animate-spin" />
+//               ) : (
+//                 "Create account"
+//               )}
 //             </Button>
 
 //             <div className="relative my-4 text-center text-xs text-muted-foreground">
@@ -190,12 +219,19 @@
 //               onClick={onGoogle}
 //               disabled={anyLoading}
 //             >
-//               {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
+//               {googleLoading ? (
+//                 <Loader2 className="h-4 w-4 animate-spin" />
+//               ) : (
+//                 "Continue with Google"
+//               )}
 //             </Button>
 
 //             <div className="pt-4 text-center text-sm text-muted-foreground">
 //               Already a rider?{" "}
-//               <Link to="/login" className="font-semibold text-forest hover:underline">
+//               <Link
+//                 to="/login"
+//                 className="font-semibold text-forest hover:underline"
+//               >
 //                 Sign in
 //               </Link>
 //             </div>
@@ -203,11 +239,17 @@
 //         </motion.div>
 //       </div>
 //       <div className="relative hidden lg:block">
-//         <img src={images.t5} alt="Horse rider on trail" className="absolute inset-0 h-full w-full object-cover" />
+//         <img
+//           src={images.t5}
+//           alt="Horse rider on trail"
+//           className="absolute inset-0 h-full w-full object-cover"
+//         />
 //         <div className="absolute inset-0 bg-gradient-to-tl from-forest/90 to-forest/30" />
 //         <div className="relative flex h-full items-end p-12 text-forest-foreground">
 //           <div>
-//             <div className="font-display text-4xl font-bold">Join 68,000 riders.</div>
+//             <div className="font-display text-4xl font-bold">
+//               Join 68,000 riders.
+//             </div>
 //             <div className="mt-3 text-forest-foreground/70">
 //               Members save on average $184 per booking with rider rewards.
 //             </div>
@@ -222,20 +264,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { images } from "@/lib/data";
 
-// Supabase Client Initialization
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-);
-
-// Relative path `/api` Vite proxy ke through request forward karega (CORS fix)
-const API_URL = import.meta.env.VITE_API_URL || "";
+const API_URL = import.meta.env.VITE_API_URL || "https://trailblazer-backend-1.onrender.com";
 
 export const Route = createFileRoute("/register")({
   head: () => ({ meta: [{ title: "Create account — Horse Trails" }] }),
@@ -307,24 +342,18 @@ function Register() {
     }
   }
 
-  // FIXED: Supabase OAuth Integration
+  // Google Login via FastAPI (Supabase dependency removed)
   async function onGoogle() {
     setGoogleLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-        setGoogleLoading(false);
-      }
+      // Direct notification as Google Auth is routed via FastAPI backend
+      toast.info("Google authentication will redirect via FastAPI backend");
+      // Agar backend me Google Auth endpoint hai:
+      // window.location.href = `${API_URL}/api/auth/google`;
     } catch (error) {
       console.error("Google sign-in error:", error);
       toast.error("Google sign-in failed. Please try again.");
+    } finally {
       setGoogleLoading(false);
     }
   }
